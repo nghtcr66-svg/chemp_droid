@@ -1,0 +1,191 @@
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import 'package:nuikit/models/onboarding_model.dart';
+import 'package:nuikit/nuikit.dart';
+
+import '../page_route/page_route.dart';
+
+@RoutePage()
+class OnboardingScreen extends StatefulWidget{
+  const OnboardingScreen ({super.key});
+
+  @override
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
+  //----------------PageController для перехода между  одним  Onboarding------------
+  final PageController _controller = PageController();
+
+
+  int _currentOnBoardingPage = 0;
+
+  //---TODO нужен для перехода к экрану логина ---------
+  // void _goToLogin(){
+  // }
+
+
+  //--------Список МОделей в которых хранятся текст и все такое--------------------
+  late final List<OnboardingModel>  _pages = [
+    //------------Экран 1--------------------
+    OnboardingModel(
+        text_title: 'Get Paid! Playing Video Game',
+        text_desc: 'Earn points and real cash when you win a battle with no delay in cashing out',
+        button_widget: TextButton(
+          onPressed: (){_controller.nextPage(duration: const Duration(milliseconds: 300),curve: Curves.easeInOut);},
+          child: Text(
+              'skip',
+              textAlign: TextAlign.center,
+              style: AppTypography.MainPoppins.copyWith(
+                  decoration: TextDecoration.underline,
+                  color: AppColors.Accent
+              )
+          ),
+        ),
+        picture_path: 'packages/nuikit/assets/images/1.png'
+    ),
+    //----------------Экран 2-----------------------
+    OnboardingModel(
+        text_title: 'Schedule Games With Friends ',
+        text_desc: 'Easily create an upcoming event and get ready for battle. Yeah! real combat fella.',
+        button_widget: TextButton(onPressed: (){_controller.nextPage(duration: const Duration(milliseconds: 300),curve: Curves.easeInOut);},
+            child: Text(
+                'skip',
+                textAlign: TextAlign.center,
+                style: AppTypography.MainPoppins.copyWith(
+                    decoration: TextDecoration.underline,
+                    color: AppColors.Accent
+                )
+            )
+        ),
+        picture_path: 'packages/nuikit/assets/images/2.png'
+    ),
+    //---------------Экран 3-----------------------------
+    OnboardingModel(
+        text_title: 'Schedule Games With Friends ',
+        text_desc: 'Easily create an upcoming event and get ready for battle. Yeah! real combat fella.',
+        button_widget: Container(
+          width: 224,
+          height: 58,
+          child: ElevatedButton(onPressed: (){context.router.push(LoginRoute());},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.Accent,
+                foregroundColor: AppColors.White,
+                //
+                shape: const StadiumBorder(),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 16.0
+                ),
+                elevation: 0,
+              ),
+              child: Text(
+                  'Let’s Combat!',
+                  style: AppTypography.NormalPoppins.copyWith(color: AppColors.White, fontWeight: FontWeight.bold)
+              )
+          ),
+        ),
+        picture_path: 'packages/nuikit/assets/images/3.png'
+    ),
+  ];
+
+  //----------Билд и структура самого OnBoarding сюда просто подставляются пересенные---------
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      backgroundColor: AppColors.White,
+      body: Center(
+        child: Column(
+          children: [
+            //-----Нагло украдено у Ярослава хз что оно делает но должно нужное подставлять----
+            Expanded(
+              child: PageView.builder(
+                  controller: _controller,
+                  itemCount: _pages.length,
+                  onPageChanged: (index) {
+                    setState(() => _currentOnBoardingPage = index);
+                  },
+                  itemBuilder: (context, index) {
+                    final item = _pages[index];
+                    //----------------Общий отступ от краев------------------------------
+                    return SingleChildScrollView(
+                      child: Padding(
+                        padding: EdgeInsetsGeometry.only(
+                            left: 16.0,
+                            bottom: 16.0
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            //------------Картинка-----------------------
+                            Padding(padding: EdgeInsetsGeometry.only(
+                                left: 24.0,
+                                top: 78.0
+                            ),
+                              child: Image.asset(item.picture_path),
+                            ),
+                            //---------------Текст розовый жирный-----------------------
+                            Padding(padding: EdgeInsetsGeometry.symmetric(
+                                vertical: 24.0,
+                                horizontal: 68.0
+                            ),
+                              child: Text(
+                                  item.text_title,
+                                  textAlign: TextAlign.center,
+                                  style: AppTypography.TittlePoppins
+                              ),
+                            ),
+                            //------Текст черный ниже--------------------------
+                            Padding(padding: EdgeInsetsGeometry.symmetric(
+                                vertical: 14.0,
+                                //Горжусь этим собой теперь все текста усещаются в три строчки
+                                horizontal: 68.0
+                            ),
+                              child: Text(
+                                  item.text_desc,
+                                  textAlign: TextAlign.center,
+                                  style: AppTypography.MainPoppins
+                              ),
+                            ),
+                            //------------------Виджет кнопки перехода-------------
+                            Align(
+                              alignment: AlignmentGeometry.center,
+                              child: Padding(padding: EdgeInsetsGeometry.only(
+                                top: 40.0,
+                              ),
+                                child: item.button_widget,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+              ),
+            ),
+            //--------------Сделал точки вне билдера так как они сами меняются ----------
+            Padding(
+              padding: EdgeInsetsGeometry.symmetric(
+                  vertical: 50.0,
+                  horizontal: 100.0
+              ),
+              child: SmoothPageIndicator(
+                controller: _controller,
+                count: 3,
+                effect: ScrollingDotsEffect(
+                    activeDotColor: AppColors.Accent,
+                    dotColor: AppColors.Accent_inactive
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
