@@ -75,7 +75,7 @@ class LandingScreen extends StatelessWidget {
                     text_title: 'Schedule',
                     text_desc: 'Easily schedule event/game then find like minded players for battle. You up for it?',
                     image_path: 'packages/nuikit/assets/images/6.png',
-                    func: (){},
+                    func: (){context.router.push(ShcelduegameRoute());},
                     header_height: 18,
                     desc_wight: 165,
                     arrow_padding: 33,

@@ -11,6 +11,7 @@ import '../screens/landing_screen.dart';
 import '../screens/login_screen.dart';
 import '../screens/menu_screeen.dart';
 import '../screens/onboarding_screen.dart';
+import '../screens/shcelduegame_screen.dart';
 
 part 'page_route.gr.dart';
 
@@ -25,5 +26,6 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: LandingRoute.page),
     AutoRoute(page: DiscoverRoute.page),
     AutoRoute(page: MenuRoute.page),
+    AutoRoute(page: ShcelduegameRoute.page),
   ];
 }

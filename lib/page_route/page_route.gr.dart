@@ -161,3 +161,19 @@ class OnboardingRoute extends PageRouteInfo<void> {
     },
   );
 }
+
+/// generated route for
+/// [ShcelduegameScreen]
+class ShcelduegameRoute extends PageRouteInfo<void> {
+  const ShcelduegameRoute({List<PageRouteInfo>? children})
+    : super(ShcelduegameRoute.name, initialChildren: children);
+
+  static const String name = 'ShcelduegameRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ShcelduegameScreen();
+    },
+  );
+}
